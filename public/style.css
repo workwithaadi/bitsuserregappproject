@@ -1,0 +1,53 @@
+body {
+    text-align: center;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../images/unnamed.webp");
+    background-size: cover;
+    background-position: top;
+    color: white;
+}
+
+#formBtn {
+    cursor: pointer;
+}
+
+.registrationForm {
+    border: 2px solid grey;
+    display: inline-block;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: left;
+    width: 35%;
+    background-color: #adc79b97;
+}
+
+.formText {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 24px;
+    font-weight: bold;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.logo {
+    background: linear-gradient(#ffffffe3, #ffffffe3);
+}
+
+.logo img {
+    width: 300px;
+    object-fit: contain;
+}
+
+.signInButton a {
+    background-color: #ffffff;
+    border: 0px solid;
+    padding: 4px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.signInButton {
+    margin: 0 auto;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+}
