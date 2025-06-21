@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bitsuserregappproject
+  labels:
+    app: bitsuserregappproject
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bitsuserregappproject
+  template:
+    metadata:
+      labels:
+        app: bitsuserregappproject
+    spec:
+      containers:
+        - name: bitsuserregappproject
+          image: workwithaadi/bitsuserregappproject:{{ .Values.image.tag }}
+          ports:
+            - containerPort: 5050
