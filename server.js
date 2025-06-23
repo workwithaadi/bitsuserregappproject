@@ -8,7 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // for parsing application/json
 app.use(express.static("public"));
 
-const MONGO_URL = "mongodb://admin:admin@mongodb:27017";
+const MONGO_URL = "mongodb://admin:admin@mongodb.default.svc.cluster.local:27017/userdb";
 const client = new MongoClient(MONGO_URL);
 
 // GET all users
