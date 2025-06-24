@@ -1,9 +1,6 @@
 # Stage 1: Build Application
 FROM node:18-alpine AS base
 
-ENV MONGO_DB_USERNAME=admin \
-    MONGO_DB_PWD=admin
-
 WORKDIR /app
 
 COPY package*.json ./
