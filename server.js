@@ -8,7 +8,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // for parsing application/json
 app.use(express.static("public"));
 
-const MONGO_URL = "mongodb://bitsuserregappproject:64gEFIwn1tbnbxXviKqDm9TMCj2G0fBGWMjfrOUwGeTvi257gSCAezqkc6m6mrTn7JzLZb50R5GNACDb993aug==@bitsuserregappproject.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@bitsuserregappproject@";
+//const MONGO_URL = "mongodb://bitsuserregappproject:64gEFIwn1tbnbxXviKqDm9TMCj2G0fBGWMjfrOUwGeTvi257gSCAezqkc6m6mrTn7JzLZb50R5GNACDb993aug==@bitsuserregappproject.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@bitsuserregappproject@";
+const MONGO_URL = "mongodb://admin:admin@mongodb:27017"
 const client = new MongoClient(MONGO_URL);
 
 // GET all users
