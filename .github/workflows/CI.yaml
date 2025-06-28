@@ -33,7 +33,7 @@ jobs:
         run: npm run build
   code-quality:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build # Need to run the build stage first
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
