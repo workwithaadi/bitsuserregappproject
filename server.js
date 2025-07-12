@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const MongoClient = require("mongodb").MongoClient;
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+
 
 const PORT = 5050;
 app.use(express.urlencoded({ extended: true }));
@@ -9,8 +11,23 @@ app.use(express.json()); // for parsing application/json
 app.use(express.static("public"));
 
 //const MONGO_URL = "mongodb://bitsuserregappproject:64gEFIwn1tbnbxXviKqDm9TMCj2G0fBGWMjfrOUwGeTvi257gSCAezqkc6m6mrTn7JzLZb50R5GNACDb993aug==@bitsuserregappproject.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@bitsuserregappproject@";
-const MONGO_URL = "mongodb://admin:admin@192.168.49.2:27017"
-const client = new MongoClient(MONGO_URL);
+const MONGO_URL = "mongodb://admin:admin@localhost:27017/userdb?authSource=admin";
+mongoose.connect(MONGO_URL);
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', () => {
+    console.log('Connected to MongoDB');
+});
+
+//Create a user schema and model
+const userSchema = new mongoose.Schema({
+    username: { type: String, unique: true },
+    password: String,
+});
+
+const User = mongoose.model('User', userSchema);
+
 
 // GET all users
 app.get("/getUsers", async (req, res) => {
@@ -28,38 +45,43 @@ app.get("/getUsers", async (req, res) => {
 
 // POST new user
 app.post("/addUser", async (req, res) => {
-    const userObj = req.body;
+    const { username, password } = req.body;
+
     try {
-        await client.connect();
-        const db = client.db("userdb");
-        const data = await db.collection("users").insertOne(userObj);
-        console.log("Data inserted:", data.insertedId);
-        res.status(200).send("User added successfully");
-    } catch (err) {
-        res.status(500).send("Error inserting user");
-    } finally {
-        await client.close();
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        const newUser = new User({ username, password: hashedPassword });
+        await newUser.save();
+
+        res.status(201).send('User registered successfully');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('An error occurred');
     }
 });
 
-// ✅ POST login API
+// POST login API
 app.post("/login", async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        await client.connect();
-        const db = client.db("userdb");
-        const user = await db.collection("users").findOne({ username, password });
+        const user = await User.findOne({ username });
 
-        if (user) {
-            res.status(200).send("Login successful");
-        } else {
-            res.status(401).send("Invalid username or password");
+        if (!user) {
+            return res.status(404).send('User not found');
         }
-    } catch (err) {
-        res.status(500).send("Login error");
-    } finally {
-        await client.close();
+
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (passwordMatch) {
+            res.send('Login successful');
+        } else {
+            res.status(401).send('Invalid credentials');
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('An error occurred');
     }
 });
 
