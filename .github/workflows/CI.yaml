@@ -7,6 +7,7 @@ on:
       - main
     paths-ignore:
       - 'README.md'
+      - 'helm/**'
 jobs:
   build:
     runs-on: ubuntu-latest
