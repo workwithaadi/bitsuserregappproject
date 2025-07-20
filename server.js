@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 
 
+
 const PORT = 5050;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // for parsing application/json
@@ -36,9 +37,9 @@ const User = mongoose.model('User', userSchema);
 app.get("/getUsers", verifyToken, async (req, res) => {
     //res.status(200).json({ message: 'Protected route accessed' });
     try {
-        const users = await User.findOne({});
-        const currentUsername = res.status(200).json(users.username);
-        return currentUsername;
+        //const users = await User.findOne({});
+        const users = req.cookies.username;
+        const currentUsername = res.status(200).json(users);
         //await client.connect();
         // const db = client.db("userdb");
         // const data = await db.collection("users").find({}).toArray();
@@ -69,10 +70,10 @@ app.get('/login', (req, res) => {
 });
 
 app.set('view engine', 'ejs');
-app.get('/dashboard', verifyToken, async (req, res) => {
-    const users = await User.findOne({});
+app.get('/dashboard', verifyToken, (req, res) => {
+    const users = req.cookies.username;
     res.sendFile(path.join(__dirname, 'views', 'dashboard.ejs'));
-    res.render('dashboard', { user: users.username });
+    res.render('dashboard', { users: users });
 });
 
 // POST login API
@@ -88,16 +89,24 @@ app.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Authentication failed' });
         }
         const token = jwt.sign({ userId: user._id }, 'your-secret-key', {
-            expiresIn: '48h',
+            expiresIn: '24h',
         });
         res.cookie("token", token);
+        res.cookie('username', username, { httpOnly: true });
         res.redirect('/dashboard');
-        //res.status(200).json({ token });
     } catch (error) {
         res.status(500).json({ error: 'Login failed' });
     }
 });
 
+// POST logout API
+app.get('/logout', async (req, res) => {
+    res.clearCookie('token');
+    res.clearCookie('username');
+    res.redirect('/login');
+});
+
+// Middleware to verify JWT token
 function verifyToken(req, res, next) {
     const token = req.cookies.token;
     if (!token) return res.redirect('/login');
