@@ -99,6 +99,7 @@ app.post('/login', async (req, res) => {
     }
 });
 
+
 // POST logout API
 app.get('/logout', async (req, res) => {
     res.clearCookie('token');
