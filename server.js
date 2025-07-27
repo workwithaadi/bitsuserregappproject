@@ -106,6 +106,7 @@ app.get('/logout', async (req, res) => {
     res.redirect('/login');
 });
 
+
 // Middleware to verify JWT token
 function verifyToken(req, res, next) {
     const token = req.cookies.token;
