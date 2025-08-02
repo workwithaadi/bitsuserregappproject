@@ -20,7 +20,7 @@ const MONGO_URL = "mongodb://bitsuserregappproject:csE9Rjr0QnSLasldVK2jn9UUvWxKe
 mongoose.connect(MONGO_URL);
 
 const db = mongoose.connection;
-db.on('error', console.log('MongoDB connection error:'));
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
     console.log('Connected to MongoDB');
 });
