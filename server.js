@@ -15,7 +15,7 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 //Azure Mongo url
-const MONGO_URL = "mongodb://bitsuserregappproject:csE9Rjr0QnSLasldVK2jn9UUvWxKeqwihoH0OplRiahBzKDR9P8UlZ4Pc3SLuMBz3G3tfDgWUgLvACDbsOnvgA==@bitsuserregappproject.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@bitsuserregappproject@";
+const MONGO_URL = "mongodb://bitsuserregappproject:TN34Rtjv1Ozcq0m7ZATUl9Be5NSfVxgEO9pVYY1ZE9ZIDV99PVgyw64VzXquAHeGX5CyEaZ68MCTACDbJEuikg==@bitsuserregappproject.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@bitsuserregappproject@";
 //const MONGO_URL = "mongodb://admin:admin@localhost:27017/userdb?authSource=admin";
 mongoose.connect(MONGO_URL);
 
